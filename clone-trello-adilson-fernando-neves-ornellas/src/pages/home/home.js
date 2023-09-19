@@ -9,9 +9,9 @@ import Footer from '../home/components/footer/footer'
 function Home () {
     return ( 
        <>
-       <Header/>
-       <Main/>
-       <Footer/>
+        <Header/> 
+        <Main/>
+        <Footer/>
        </>
     );
 };
