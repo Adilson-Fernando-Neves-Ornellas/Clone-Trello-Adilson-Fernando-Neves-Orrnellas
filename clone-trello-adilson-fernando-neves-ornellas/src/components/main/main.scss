@@ -17,6 +17,9 @@
         padding-left: 30px;
         .card{
             background-color: #101204 ;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             padding-bottom: 15px;
             border-radius: 20px;
             .tituloCard{
@@ -27,7 +30,7 @@
                 color: #B6C2CF;
             }
             .conteudocard{                
-                margin: 10px;
+                margin: 0px 10px;
                 padding: 5px;
                 border-radius: 10px;
                 background-color:#282E33 ;
@@ -35,6 +38,28 @@
                     padding-left: 5px;
                     padding-right: 10px;
                     color: #B6C2CF;
+                }
+            }
+            .formColuna{
+                padding-left: 15px;
+                padding-right: 15px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .imputColuna{
+                    background-color: #101204;
+                    border: 0;
+                }
+                .buttonAddItenColuna{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #101204;
+                    border: 0;
+                    padding: 0;
+                    .ImgAddItenColuna{
+                        width: 100%;
+                    }
                 }
             }
         }
