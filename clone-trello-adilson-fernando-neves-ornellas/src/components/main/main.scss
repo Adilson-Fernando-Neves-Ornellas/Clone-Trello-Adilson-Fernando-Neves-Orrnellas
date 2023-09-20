@@ -1,68 +1,88 @@
-.conteiner{
-    width: 100%;
-    background-color: #8F3F65;
-    .tituloconteiner{
-        background-color: #6D304D;
-        text-align: left;
-        padding-left: 60px;
+.conteiner {
+  width: 100%;
+  background-color: #8f3f65;
+  .tituloconteiner {
+    background-color: #6d304d;
+    text-align: left;
+    padding-left: 60px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: white;
+  }
+  .conteinerCards {
+    display: flex;
+    gap: 10px;
+    padding-top: 15px;
+    padding-bottom: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
+    @media (max-width: 900px) {
+        flex-direction: column;
+        
+    }
+    .card {
+      background-color: #101204;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-bottom: 15px;
+      border-radius: 20px;
+      .tituloCard {
         padding-top: 15px;
         padding-bottom: 15px;
-        color: white;
-    }
-    .conteinerCards{
+        padding-left: 20px;
+        padding-right: 20px;
+        color: #b6c2cf;
+      }
+      .conteudocard {
+        margin: 0px 10px;
+        padding: 5px;
+        border-radius: 10px;
+        background-color: #282e33;
+        .tituloconteudo {
+          padding-left: 5px;
+          padding-right: 10px;
+          color: #b6c2cf;
+        }
+      }
+      .formItenColuna {
+        padding-left: 15px;
+        padding-right: 15px;
         display: flex;
-        gap: 10px;
-        padding-top: 15px;
-        padding-bottom: 50px;
-        padding-left: 30px;
-        .card{
-            background-color: #101204 ;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-bottom: 15px;
+        justify-content: space-between;
+        align-items: center;
+        .imputItenColuna {
+          background-color: #101204;
+          border: 0;
+        }
+        .buttonAdd {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #101204;
+          border: 0;
+          padding: 0;
+          .ImgAdd{
+            width: 100%;
+          }
+        }
+      }
+    }
+    .formColuna{
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        width: 100%;
+        .imputColuna{
+            background-color: #be6a9b;
+            color: #b6c2cf;
+            border: 0;
+            padding: 8px 12px;
             border-radius: 20px;
-            .tituloCard{
-                padding-top: 15px;
-                padding-bottom: 15px;
-                padding-left: 20px;
-                padding-right: 20px;
-                color: #B6C2CF;
-            }
-            .conteudocard{                
-                margin: 0px 10px;
-                padding: 5px;
-                border-radius: 10px;
-                background-color:#282E33 ;
-                .tituloconteudo{
-                    padding-left: 5px;
-                    padding-right: 10px;
-                    color: #B6C2CF;
-                }
-            }
-            .formColuna{
-                padding-left: 15px;
-                padding-right: 15px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                .imputColuna{
-                    background-color: #101204;
-                    border: 0;
-                }
-                .buttonAddItenColuna{
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: #101204;
-                    border: 0;
-                    padding: 0;
-                    .ImgAddItenColuna{
-                        width: 100%;
-                    }
-                }
+            @media (max-width: 900px) {
+                width: 100%;
             }
         }
     }
+  }
 }
-

@@ -122,17 +122,17 @@ function Main() {
                   ))}
                   <form
                     onSubmit={(event) => AdicionarNovoItemLista(event, coluna.id)}
-                    className="formColuna"
+                    className="formItenColuna"
                   >
                     <input
-                      className="imputColuna"
+                      className="imputItenColuna"
                       value={novoIten}
                       type="text"
                       placeholder="+ Adicionar um Cartão"
                       onChange={(event) => setNovoIten(event.target.value)}
                     />
-                    <button className="buttonAddItenColuna" type="submit">
-                    <img className='ImgAddItenColuna' src={imgAddIten} alt="Adicionar Item" />
+                    <button className="buttonAdd" type="submit">
+                    <img className='ImgAdd' src={imgAddIten} alt="Adicionar Item" />
                     </button>
                   </form>
                   {provided.placeholder}
@@ -140,6 +140,18 @@ function Main() {
               )}
             </Droppable>
           ))}
+          <form
+          // onSubmit={(event) => AdicionarNovoItemLista(event, coluna.id)}
+          className="formColuna"
+          >
+          <input
+            className="imputColuna"
+            // value={}
+            type="text"
+            placeholder="+ Adicionar outra lista"
+            // onChange={(event) => setNovoIten(event.target.value)}
+          />
+        </form>
         </div>
       </DragDropContext>
     </div>
