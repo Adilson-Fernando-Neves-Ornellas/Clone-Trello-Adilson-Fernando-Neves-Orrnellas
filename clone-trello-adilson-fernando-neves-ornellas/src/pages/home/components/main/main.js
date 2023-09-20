@@ -1,92 +1,106 @@
-import React from "react";
-
+import React, { useState } from "react";
 import "./main.scss";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const colunasIniciais = [
   {
     id: "1",
-    nome: " Coluna 1",
+    nome: "A fazer",
     itens: [
-      { id: "1", conteudo: "Conteudo 1" },
-      { id: "2", conteudo: "Conteudo 2" },
-      { id: "3", conteudo: "Conteudo 3" },
+      { id: "1", conteudo: "Planejamento de projeto" },
+      { id: "2", conteudo: "Reunião inicial" },
     ],
   },
   {
     id: "2",
-    nome: " Coluna 2",
+    nome: "Em andamento",
     itens: [
-      { id: "4", conteudo: "Conteudo 4" },
-      { id: "5", conteudo: "Conteudo 5" },
-      { id: "6", conteudo: "Conteudo 6" },
+    ],
+  },
+  {
+    id: "3",
+    nome: "Concluido",
+    itens: [
     ],
   },
 ];
 
 function Main() {
-  const colunas = colunasIniciais;
+  const [colunas, setColunas] = useState(colunasIniciais);
 
-  const onDragEng = (result) => {
+  const onDragEnd = (result) => {
+   
+    const idColunaOrigem = colunas.findIndex(
+      (coluna) => coluna.id === result.source.droppableId
+    );
+    const IdColunaDestino = colunas.findIndex(
+      (coluna) => coluna.id === result.destination.droppableId
+    );
 
-    var colunaSelecionado = colunas[1].itens;
+    if (idColunaOrigem === IdColunaDestino) {
+      // Reordenando dentro da mesma coluna
+      const coluna = colunas[idColunaOrigem];
+      const items = Array.from(coluna.itens);
+      const [reordenandoArray] = items.splice(result.source.index, 1);
+      items.splice(result.destination.index, 0, reordenandoArray);
 
-    // acha o item selecionado para arrastar
-    for(var i = 0; i < colunaSelecionado.length; i++){
-        if(colunaSelecionado[i].id === result.draggableId){
-            var itemArrastado = colunaSelecionado[i];
-        }
+      const novasColunas = [...colunas];
+      novasColunas[idColunaOrigem].itens = items;
+      setColunas(novasColunas);
+    } else {
+      // Movendo entre colunas
+      const colunaOrigem = colunas[idColunaOrigem];
+      const colunaDestino = colunas[IdColunaDestino];
+
+      const ItensColunaOrigem = Array.from(colunaOrigem.itens);
+      const itensColunaDestino = Array.from(colunaDestino.itens);
+
+      const [ItemArrastado] = ItensColunaOrigem.splice(result.source.index, 1);
+      itensColunaDestino.splice(result.destination.index, 0, ItemArrastado);
+
+      const novasColunas = [...colunas];
+      novasColunas[idColunaOrigem].itens = ItensColunaOrigem;
+      novasColunas[IdColunaDestino].itens = itensColunaDestino;
+
+      setColunas(novasColunas);
     }
-
-    // exclui o item da coluna
-
-    var colunaRefatorada = colunaSelecionado.filter((itens) => itens.id !== result.draggableId)
-
-    // adiciona o item arrastado na coluna
-
-    colunaRefatorada.splice(result.destination.index, 0, itemArrastado)
-    
-    // mudando no site 
-    colunas[1].itens = colunaRefatorada 
-
   };
 
   return (
     <div className="conteiner">
-        <h1 className="tituloconteiner">Meu quadro Trello</h1>
-        <DragDropContext onDragEnd={onDragEng}>
-            <div className="conteinerCards">
-            {colunas.map((colunas) => (
-                <Droppable key={colunas.id} droppableId={colunas.id}>
-                {(provided) => (
-                    <div ref={provided.innerRef} className="card">
-                    <h1 className="tituloCard">{colunas.nome}</h1>
-                    {colunas.itens.map((itens, index) => (
-                        <Draggable
-                        key={itens.id}
-                        draggableId={itens.id}
-                        index={index}
+      <h1 className="tituloconteiner">Meu quadro Trello</h1>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className="conteinerCards">
+          {colunas.map((coluna) => (
+            <Droppable key={coluna.id} droppableId={coluna.id}>
+              {(provided) => (
+                <div ref={provided.innerRef} className="card">
+                  <h1 className="tituloCard">{coluna.nome}</h1>
+                  {coluna.itens.map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className="conteudocard"
                         >
-                        {(provided) => (
-                            <div
-                            ref={provided.innerRef}
-                            style={{ ...provided.draggableProps.style }}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="conteudocard"
-                            >
-                            <h1 className="tituloconteudo">{itens.conteudo}</h1>
-                            </div>
-                        )}
-                        </Draggable>
-                    ))}
-                    {provided.placeholder}
-                    </div>
-                )}
-                </Droppable>
-            ))}
-            </div>
-        </DragDropContext>
+                          <h1 className="tituloconteudo">{item.conteudo}</h1>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          ))}
+        </div>
+      </DragDropContext>
     </div>
   );
 }
