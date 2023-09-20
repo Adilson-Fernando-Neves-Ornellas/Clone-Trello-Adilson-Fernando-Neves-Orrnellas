@@ -44,6 +44,34 @@
           padding-right: 10px;
           color: #b6c2cf;
         }
+        .buttoneditarisublist{
+            background-color: #282e33;
+            border: 0;
+            .imgbuttoneditar{
+                width: 100%;
+            }
+        }
+        .formEditar{
+            background-color: #282e33;
+            border: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          .imputedit{
+            background-color: #282e33;
+            border: 0;
+            color: #b6c2cf;
+            &:focus {
+                box-shadow: 0 ;
+                outline: 0;
+            }
+          }
+          .buttonsalvaredit{
+            background-color: #282e33;
+            border: 0;
+            color: #b6c2cf;
+          }
+        }
       }
       .formItenColuna {
         padding-left: 15px;
@@ -54,6 +82,11 @@
         .imputItenColuna {
           background-color: #101204;
           border: 0;
+          color: #b6c2cf;
+          &:focus {
+            box-shadow: 0 ;
+            outline: 0;
+            }
         }
         .buttonAdd {
           display: flex;
@@ -81,6 +114,10 @@
             border-radius: 20px;
             @media (max-width: 900px) {
                 width: 100%;
+            }
+            &:focus {
+                box-shadow: 0 ;
+                outline: 0;
             }
         }
     }

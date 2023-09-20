@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import "./main.scss";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import imgAddIten from "../../assets/imgAddIten.png"
+import buttoneditar from '../../assets/buttoneditar.svg'
 
 const colunasIniciais = [
   {
@@ -26,15 +27,24 @@ const colunasIniciais = [
 ];
 
 function Main() {
-  const [colunas, setColunas] = useState(colunasIniciais);
-  const [novoIten, setNovoIten] = useState("");
+  localStorage.setItem('colunas', JSON.stringify(colunasIniciais));
+  const dataLocalStorage = JSON.parse(localStorage.getItem('colunas') || '[]');
+  const [colunas, setColunas] = useState(dataLocalStorage);
 
+  useEffect(() => {
+    localStorage.setItem('colunas', JSON.stringify(colunas));
+  }, [colunas]);
+  
+  const [novoIten, setNovoIten] = useState("");
+  const [novaColuna, setNovaColuna] = useState();
+  const [idEditado, setIdEditado] = useState('');
+  const [conteudoEditado, setConteudoEditado] = useState(''); 
+  
   const onDragEnd = (result) => {
     const idColunaOrigem = result.source.droppableId;
     const idColunaDestino = result.destination.droppableId;
 
     if (idColunaOrigem === idColunaDestino) {
-      // Reordenando dentro da mesma coluna
       const coluna = colunas.find((coluna) => coluna.id === idColunaOrigem);
       const items = Array.from(coluna.itens);
       const [reordenandoArray] = items.splice(result.source.index, 1);
@@ -47,7 +57,6 @@ function Main() {
       novasColunas[colunaIndex].itens = items;
       setColunas(novasColunas);
     } else {
-      // Movendo entre colunas
       const colunaOrigem = colunas.find((coluna) => coluna.id === idColunaOrigem);
       const colunaDestino = colunas.find((coluna) => coluna.id === idColunaDestino);
 
@@ -89,12 +98,67 @@ function Main() {
       );
       novasColunas[colunaAlvoIndex].itens.push(novoItem);
 
-        setColunas(novasColunas);
+      setColunas(novasColunas);
 
-      // Limpe o valor do input após adicionar o item
       setNovoIten("");
     }
   }
+  function AdicionarNovaColuna(event) {
+    event.preventDefault();
+
+    if (novaColuna.trim() !== "") {
+      const novaColunaId = colunas.length+1;
+
+      const novaColunaObj = {
+        id: novaColunaId.toString(),
+        nome: novaColuna.toString(), 
+        itens: [],
+      };
+
+      setColunas([...colunas, novaColunaObj]);
+
+      setNovaColuna("");
+    }
+  }
+  function editarItem(id) {
+    let itemEditado
+    for (const coluna of colunas) {
+      for (const item of coluna.itens) {
+        if (item.id === id) {
+          itemEditado = item;
+          break; 
+        }
+      }
+      if (itemEditado) {
+        break;
+      }
+    }
+  
+    if (itemEditado) {
+      setConteudoEditado(itemEditado.conteudo);
+      console.log(setConteudoEditado)
+      setIdEditado(id);
+    } else {
+      setIdEditado('');
+      setConteudoEditado('');
+    }
+  }
+  function salvarEdicao(id) {
+    setColunas((colunas) => {
+      return colunas.map((coluna) => {
+        const novosItens = coluna.itens.map((item) => {
+          if (item.id === id) {
+            return { ...item, conteudo: conteudoEditado }; 
+          }
+          return item;
+        });
+        return { ...coluna, itens: novosItens };
+      });
+    });
+  
+    setIdEditado("");
+    setConteudoEditado("");
+  }  
 
   return (
     <div className="conteiner">
@@ -116,6 +180,23 @@ function Main() {
                           className="conteudocard"
                         >
                           <h1 className="tituloconteudo">{item.conteudo}</h1>
+                          {item.id === idEditado ? (
+                          <form className='formEditar' onSubmit={() => salvarEdicao(item.id)}>
+                            <input
+                              className='imputedit'
+                              type="text"
+                              value={conteudoEditado}
+                              onChange={event => setConteudoEditado(event.target.value)}
+                              />
+                            <button className='buttonsalvaredit' onClick={() => salvarEdicao(item.id)} type='submit'>Salvar</button>
+                          </form>
+                        ) : (
+                          <>
+                            <button className='buttoneditarisublist' onClick={() => editarItem(item.id)}>
+                              <img className='imgbuttoneditar' src={buttoneditar} alt="Editar Item Sub Lista" />
+                            </button>
+                          </>
+                        )}
                         </div>
                       )}
                     </Draggable>
@@ -141,15 +222,15 @@ function Main() {
             </Droppable>
           ))}
           <form
-          // onSubmit={(event) => AdicionarNovoItemLista(event, coluna.id)}
+           onSubmit={(event) => AdicionarNovaColuna(event)}
           className="formColuna"
           >
           <input
             className="imputColuna"
-            // value={}
+            value={novaColuna}
             type="text"
             placeholder="+ Adicionar outra lista"
-            // onChange={(event) => setNovoIten(event.target.value)}
+            onChange={(event) => setNovaColuna(event.target.value)}
           />
         </form>
         </div>
